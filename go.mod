@@ -6,8 +6,6 @@ require (
 	github.com/hashicorp/terraform-plugin-framework v0.6.1
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.13.0
 	github.com/levigross/grequests v0.0.0-20190908174114-253788527a1a
-	github.com/mitchellh/go-testing-interface v1.14.1
-	gitlab.bingosoft.net/golang/aws-sdk-go v0.0.0-20220413071311-ee93c7cde72a
 )
 
 require (
@@ -63,4 +61,6 @@ require (
 	github.com/go-ini/ini v1.66.4 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
+	github.com/mitchellh/go-testing-interface v1.14.1 // indirect
+	gitlab.bingosoft.net/golang/aws-sdk-go v0.0.0-20220413071311-ee93c7cde72a // indirect
 )

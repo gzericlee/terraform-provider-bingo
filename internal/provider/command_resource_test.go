@@ -30,10 +30,10 @@ func TestCommandResource(t *testing.T) {
 func testCommandResourceConfig() string {
 	return fmt.Sprintf(`
 provider "bingo" {
-  sso_endpoint      = "https://sso.bingosoft.net"
-  cmp_access_token	= "YmluZ286YmluZ29fbWVtYmVyOjBYSUw3UE4xbA"
+  sso_endpoint      = "##"
+  cmp_access_token	= "##"
   #cmp_client_secret	= "clientSecret1"
-  cmp_endpoint		= "https://cmp-dev.bingosoft.net"
+  cmp_endpoint		= "##"
 }
 
 resource "bingo_cmp_command" "test" {

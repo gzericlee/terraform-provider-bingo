@@ -14,7 +14,7 @@ var (
 	version string = "dev"
 
 	// goreleaser can also pass the specific commit if you want
-	// commit  string = ""
+	commit string = ""
 )
 
 func main() {
@@ -29,7 +29,7 @@ func main() {
 		// TODO: update this string with the full name of your provider as used in your configs
 		ProviderAddr: "registry.terraform.io/hashicorp/bingo",
 
-		ProviderFunc: provider.New(version),
+		ProviderFunc: provider.New(version + "_" + commit),
 	}
 
 	plugin.Serve(opts)

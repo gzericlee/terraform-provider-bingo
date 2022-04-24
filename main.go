@@ -1,11 +1,9 @@
 package main
 
 import (
-	"context"
 	"flag"
-	"log"
 
-	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
 
 	"terraform-provider-bingo/internal/provider"
 )
@@ -20,20 +18,19 @@ var (
 )
 
 func main() {
-	var debug bool
+	var debugMode bool
 
-	flag.BoolVar(&debug, "debug", false, "set to true to run the provider with support for debuggers like delve")
+	flag.BoolVar(&debugMode, "debug", false, "set to true to run the provider with support for debuggers like delve")
 	flag.Parse()
 
-	opts := tfsdk.ServeOpts{
-		Debug: debug,
-		// TODO: Update this string with the published name of your provider.
-		Name: "registry.terraform.io/bingo/agent",
+	opts := &plugin.ServeOpts{
+		Debug: debugMode,
+
+		// TODO: update this string with the full name of your provider as used in your configs
+		ProviderAddr: "registry.terraform.io/hashicorp/bingo",
+
+		ProviderFunc: provider.New(version),
 	}
 
-	err := tfsdk.Serve(context.Background(), provider.New(version), opts)
-
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	plugin.Serve(opts)
 }

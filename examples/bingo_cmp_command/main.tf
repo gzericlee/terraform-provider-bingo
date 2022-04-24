@@ -7,16 +7,15 @@ terraform {
 }
 
 provider "bingo" {
-  ssoEndpoint      = "https://sso.bingosoft.net"
-  cmpAccessToken	= "YmluZ286YmluZ29fbWVtYmVyOjZtMnNIMEhSTg"
-  #cmp_client_secret	= "clientSecret1"
-  cmpEndpoint		= "https://cmp-dev.bingosoft.net"
+  ssoEndpoint      = "##"
+  accessToken	   = "##"
+  cmpEndpoint	   = "##"
 }
 
 resource "bingo_cmp_command" "cmd" {
   host_type   	= "1"
   content     	= "pwd"
-  instance_ids	= "c0dea473-cfc0-49a7-830e-a7edc8f1125d"
+  instance_ids	= "##"
 }
 
 output "TASK_ID" {

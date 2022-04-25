@@ -61,7 +61,7 @@ func New(version string) func() *schema.Provider {
 					Type:        schema.TypeString,
 					Required:    true,
 					DefaultFunc: schema.EnvDefaultFunc(IAM_CLIENT_ID, nil),
-					Description: "IAM颁发的客户端ID",
+					Description: "IAM颁发的客户端Id",
 				},
 				"iam_client_secret": {
 					Type:        schema.TypeString,

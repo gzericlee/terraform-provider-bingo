@@ -33,6 +33,8 @@ const (
 	CMP_ENDPOINT      = "CMP_ENDPOINT"
 	IAM_CLIENT_ID     = "IAM_CLIENT_ID"
 	IAM_CLIENT_SECRET = "IAM_CLIENT_SECRET"
+	USER_NAME         = "USER_NAME"
+	PASSWORD          = "PASSWORD"
 )
 
 type bingoCloudClient struct {
@@ -63,9 +65,21 @@ func New(version string) func() *schema.Provider {
 				},
 				"iam_client_secret": {
 					Type:        schema.TypeString,
-					Optional:    true,
+					Required:    true,
 					DefaultFunc: schema.EnvDefaultFunc(IAM_CLIENT_SECRET, nil),
 					Description: "IAM颁发的客户端Secret",
+				},
+				"user_name": {
+					Type:        schema.TypeString,
+					Optional:    true,
+					DefaultFunc: schema.EnvDefaultFunc(USER_NAME, nil),
+					Description: "用户名",
+				},
+				"password": {
+					Type:        schema.TypeString,
+					Optional:    true,
+					DefaultFunc: schema.EnvDefaultFunc(PASSWORD, nil),
+					Description: "密码",
 				},
 			},
 
@@ -88,9 +102,19 @@ func configure(version string, p *schema.Provider) func(context.Context, *schema
 		cmpEndpoint := r.Get("cmp_endpoint").(string)
 		iamClientId := r.Get("iam_client_id").(string)
 		iamClientSecret := r.Get("iam_client_secret").(string)
+		userName := r.Get("user_name").(string)
+		password := r.Get("password").(string)
 
-		ssoClient := sso.New(iamEndpoint, iamClientId, iamClientSecret)
-		auth, err := ssoClient.GenerateAccessToken()
+		var err error
+		auth := &sso.Authorization{}
+		ssoClient := sso.New(iamEndpoint, iamClientId, iamClientSecret, userName, password)
+
+		if userName != "" && password != "" {
+			auth, err = ssoClient.GenerateAccessTokenByUser()
+		} else {
+			auth, err = ssoClient.GenerateAccessTokenByClient()
+		}
+
 		if err != nil {
 			return nil, diag.Errorf(fmt.Sprintf("[SSO] Generate AccessToken failed: %s", err))
 		}

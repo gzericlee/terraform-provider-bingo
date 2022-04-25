@@ -17,10 +17,12 @@ description: |-
 
 ### Required
 
-- `access_token` (String) IAM颁发的用户凭证
 - `cmp_endpoint` (String) CMP地址
-- `sso_endpoint` (String) SSO地址
+- `iam_client_id` (String) IAM颁发的客户端ID
+- `iam_client_secret` (String) IAM颁发的客户端Secret
+- `iam_endpoint` (String) IAM地址
 
 ### Optional
 
-- `cmp_client_secret` (String) IAM颁发给CMP的客户端凭证
+- `password` (String) 密码
+- `user_name` (String) 用户名

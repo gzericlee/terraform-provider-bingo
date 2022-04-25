@@ -7,9 +7,7 @@ terraform {
 }
 
 provider "bingo" {
-  ssoEndpoint      = "##"
-  accessToken	   = "##"
-  cmpEndpoint	   = "##"
+
 }
 
 resource "bingo_cmp_command" "cmd" {

@@ -11,9 +11,10 @@ func init() {
 	_ = os.Setenv("debug", "true")
 	_ = os.Setenv("TF_LOG", "INFO")
 
-	_ = os.Setenv("SSO_ENDPOINT", "https://sso.bingosoft.net")
+	_ = os.Setenv("IAM_ENDPOINT", "https://sso.bingosoft.net")
 	_ = os.Setenv("CMP_ENDPOINT", "https://cmp-dev.bingosoft.net")
-	_ = os.Setenv("ACCESS_TOKEN", "YmluZ286YmluZ29fbWVtYmVyOnV0UnZsTjVHYg")
+	_ = os.Setenv("IAM_CLIENT_ID", "ajcNcUVYSmEW99qCyA9PnT")
+	_ = os.Setenv("IAM_CLIENT_SECRET", "b25da097-657d-4ed0-a579-47da34ad87e1")
 }
 
 // providerFactories are used to instantiate a provider during acceptance testing.

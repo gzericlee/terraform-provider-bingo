@@ -29,10 +29,10 @@ func init() {
 }
 
 const (
-	SSO_ENDPOINT      = "SSO_ENDPOINT"
-	ACCESS_TOKEN      = "ACCESS_TOKEN"
+	IAM_ENDPOINT      = "IAM_ENDPOINT"
 	CMP_ENDPOINT      = "CMP_ENDPOINT"
-	CMP_CLIENT_SECRET = "CMP_CLIENT_SECRET"
+	IAM_CLIENT_ID     = "IAM_CLIENT_ID"
+	IAM_CLIENT_SECRET = "IAM_CLIENT_SECRET"
 )
 
 type bingoCloudClient struct {
@@ -43,17 +43,11 @@ func New(version string) func() *schema.Provider {
 	return func() *schema.Provider {
 		p := &schema.Provider{
 			Schema: map[string]*schema.Schema{
-				"sso_endpoint": {
+				"iam_endpoint": {
 					Type:        schema.TypeString,
 					Required:    true,
-					DefaultFunc: schema.EnvDefaultFunc(SSO_ENDPOINT, nil),
-					Description: "SSO地址",
-				},
-				"access_token": {
-					Type:        schema.TypeString,
-					Required:    true,
-					DefaultFunc: schema.EnvDefaultFunc(ACCESS_TOKEN, nil),
-					Description: "IAM颁发的用户凭证",
+					DefaultFunc: schema.EnvDefaultFunc(IAM_ENDPOINT, nil),
+					Description: "IAM地址",
 				},
 				"cmp_endpoint": {
 					Type:        schema.TypeString,
@@ -61,11 +55,17 @@ func New(version string) func() *schema.Provider {
 					DefaultFunc: schema.EnvDefaultFunc(CMP_ENDPOINT, nil),
 					Description: "CMP地址",
 				},
-				"cmp_client_secret": {
+				"iam_client_id": {
+					Type:        schema.TypeString,
+					Required:    true,
+					DefaultFunc: schema.EnvDefaultFunc(IAM_CLIENT_ID, nil),
+					Description: "IAM颁发的客户端ID",
+				},
+				"iam_client_secret": {
 					Type:        schema.TypeString,
 					Optional:    true,
-					DefaultFunc: schema.EnvDefaultFunc(CMP_CLIENT_SECRET, nil),
-					Description: "IAM颁发给CMP的客户端凭证",
+					DefaultFunc: schema.EnvDefaultFunc(IAM_CLIENT_SECRET, nil),
+					Description: "IAM颁发的客户端Secret",
 				},
 			},
 
@@ -84,26 +84,24 @@ func New(version string) func() *schema.Provider {
 
 func configure(version string, p *schema.Provider) func(context.Context, *schema.ResourceData) (interface{}, diag.Diagnostics) {
 	return func(ctx context.Context, r *schema.ResourceData) (interface{}, diag.Diagnostics) {
-		ssoEndpoint := r.Get("sso_endpoint").(string)
+		iamEndpoint := r.Get("iam_endpoint").(string)
 		cmpEndpoint := r.Get("cmp_endpoint").(string)
-		accessToken := r.Get("access_token").(string)
-		cmpClientSecret := r.Get("cmp_client_secret").(string)
+		iamClientId := r.Get("iam_client_id").(string)
+		iamClientSecret := r.Get("iam_client_secret").(string)
 
-		if cmpClientSecret != "" {
-			ssoClient := sso.New(ssoEndpoint, cmpClientSecret)
-			auth, err := ssoClient.GenerateAccessToken()
-			if err != nil {
-				return nil, diag.Errorf(fmt.Sprintf("[SSO] Generate AccessToken failed: %s", err))
-			}
-			accessToken = auth.AccessToken
-			tflog.Trace(ctx, "Generate AT by clientSecret", map[string]interface{}{
-				"input":  []string{ssoEndpoint, cmpClientSecret},
-				"output": auth,
-			})
+		ssoClient := sso.New(iamEndpoint, iamClientId, iamClientSecret)
+		auth, err := ssoClient.GenerateAccessToken()
+		if err != nil {
+			return nil, diag.Errorf(fmt.Sprintf("[SSO] Generate AccessToken failed: %s", err))
 		}
 
+		tflog.Trace(ctx, "Generate AT by clientSecret", map[string]interface{}{
+			"input":  []string{iamEndpoint, iamClientId, iamClientSecret},
+			"output": auth,
+		})
+
 		return &bingoCloudClient{
-			cmpClient: cmp.New(cmpEndpoint, accessToken),
+			cmpClient: cmp.New(cmpEndpoint, auth.AccessToken),
 		}, nil
 	}
 }

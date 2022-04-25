@@ -81,7 +81,7 @@ func resourceCmpCommandCreate(ctx context.Context, d *schema.ResourceData, meta 
 	// write logs using the tflog package
 	// see https://pkg.go.dev/github.com/hashicorp/terraform-plugin-log/tflog
 	// for more information
-	tflog.Trace(ctx, "Sent a command successfully", map[string]interface{}{
+	tflog.Debug(ctx, "Sent a command successfully", map[string]interface{}{
 		"input":  input,
 		"output": output,
 	})
@@ -123,7 +123,7 @@ func resourceCmpCommandRead(ctx context.Context, d *schema.ResourceData, meta in
 		return diag.Errorf(fmt.Sprintf("[CMP] Waiting for command (%s) : %s", output.Id, err))
 	}
 
-	tflog.Trace(ctx, "[CMP] Executed a command successfully", map[string]interface{}{
+	tflog.Debug(ctx, "[CMP] Executed a command successfully", map[string]interface{}{
 		"input":  input,
 		"output": output,
 	})
@@ -134,14 +134,14 @@ func resourceCmpCommandRead(ctx context.Context, d *schema.ResourceData, meta in
 func resourceCmpCommandUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	// use the meta value to retrieve your client from the provider configure method
 	// client := meta.(*apiClient)
-	tflog.Trace(ctx, "[CMP] Updated a command successfully", map[string]interface{}{})
+	tflog.Debug(ctx, "[CMP] Updated a command successfully", map[string]interface{}{})
 	return nil
 }
 
 func resourceCmpCommandDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	// use the meta value to retrieve your client from the provider configure method
 	// client := meta.(*apiClient)
-	tflog.Trace(ctx, "[CMP] Deleted a command successfully", map[string]interface{}{})
+	tflog.Debug(ctx, "[CMP] Deleted a command successfully", map[string]interface{}{})
 	return nil
 }
 

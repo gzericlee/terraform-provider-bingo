@@ -113,7 +113,7 @@ func (its *Client) CreateCommand(input *CommandInput) (*CommandOutput, error) {
 
 	content := resp.String()
 	if !resp.Ok {
-		err = fmt.Errorf("[CMP] Response code: [%v]，result: [%s]", resp.StatusCode, content)
+		err = fmt.Errorf("[CMP] Response code: %v，result: %s", resp.StatusCode, content)
 		return nil, err
 	}
 

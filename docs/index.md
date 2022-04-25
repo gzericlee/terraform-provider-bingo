@@ -18,7 +18,7 @@ description: |-
 ### Required
 
 - `cmp_endpoint` (String) CMP地址
-- `iam_client_id` (String) IAM颁发的客户端ID
+- `iam_client_id` (String) IAM颁发的客户端Id
 - `iam_client_secret` (String) IAM颁发的客户端Secret
 - `iam_endpoint` (String) IAM地址
 
